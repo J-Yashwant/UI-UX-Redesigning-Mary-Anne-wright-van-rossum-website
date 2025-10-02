@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mary-Anne Wright Van Ross</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: pageEnter 1s forwards ease-out;
+        font-family: 'Georgia', serif;
+        color: white;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: black;
+    }
+
+    @keyframes pageEnter {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Background video */
+    #bg-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+    .tagline {
+        text-align: center;
+        font-size: 1.3rem;
+        margin: 20px 0;
+        font-style: italic;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        transition: background 0.3s;
+    }
+
+    .navbar a:hover,
+    .navbar a.active {
+        background: white;
+        color: black;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 2.3rem;
+        margin-bottom: 30px;
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+    }
+
+    /* Carousel */
+    .carousel {
+        width: 90%;
+        max-width: 700px;
+        height: 400px;
+        position: relative;
+        margin: 0 auto 50px;
+        perspective: 1000px;
+    }
+
+    .carousel__container {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        transform-style: preserve-3d;
+        transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        transform: translateZ(-400px) rotateY(0deg);
+    }
+
+    .carousel__item {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        opacity: 0.4;
+        transition: opacity 0.5s ease, transform 0.3s ease;
+    }
+
+    .arrow {
+        position: absolute;
+        top: 50%;
+        font-size: 2rem;
+        color: white;
+        cursor: pointer;
+        user-select: none;
+        transform: translateY(-50%);
+        z-index: 2;
+        background: rgba(0,0,0,0.4);
+        padding: 10px;
+        border-radius: 50%;
+    }
+
+    .arrow.left { left: 10px; }
+    .arrow.right { right: 10px; }
+
+    .carousel-caption {
+        text-align: center;
+        max-width: 800px;
+        margin: 20px auto;
+        font-size: 1.2rem;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    }
+
+    @media (max-width: 768px) {
+        .carousel { height: 250px; }
+    }
+</style>
+</head>
+<body>
+
+<video autoplay muted loop playsinline id="bg-video">
+  <source src="1.mp4" type="video/mp4">
+  <img src="fallback.png" alt="Background">
+</video>
+
+<p class="tagline">
+    To view any paintings in more detail please<br> click on each painting in turn.
+</p>
+
+<nav class="navbar">
+    <a href="home.html">HOME</a>
+    <a href="studio.html" class="active">STUDIOS</a>
+    <a href="exhibition.html">EXHIBITIONS</a>
+    <a href="gallery.html">ARTWORK - GALLERY</a>
+    <a href="contact.html">CONTACT</a>
+</nav>
+
+<h1>Welcome! Explore where the hilarious ideas come from</h1>
+
+<div class="carousel">
+    <div class="arrow left" onclick="rotateCarousel(-1)">&#10094;</div>
+    <div class="arrow right" onclick="rotateCarousel(1)">&#10095;</div>
+
+    <div class="carousel__container" id="carousel">
+        <div class="carousel__item" style="background-image:url('1.jpg')"></div>
+        <div class="carousel__item" style="background-image:url('2.jpg')"></div>
+        <div class="carousel__item" style="background-image:url('3.jpg')"></div>
+        <div class="carousel__item" style="background-image:url('4.jpg')"></div>
+        <div class="carousel__item" style="background-image:url('5.jpg')"></div>
+    </div>
+</div>
+
+<div class="carousel-caption">
+    <p id="caption">
+        Explore Mary-Anne Wright Van Ross’s latest works showcased in this interactive carousel.  
+        Click the arrows to view each painting, and immerse yourself in the vibrant colors  
+        and stories behind every brushstroke.
+    </p>
+</div>
+
+<script>
+const carousel = document.getElementById('carousel');
+const items = document.querySelectorAll('.carousel__item');
+const totalItems = items.length;
+let angle = 0;
+let currentIndex = 0;
+const radius = 400;
+
+const captions = [
+    "Studio 1",
+    "Studio 2",
+    "Studio 3",
+    "Studio 4",
+    "Studio 5"
+];
+
+// Arrange items in a circle and set initial opacity
+items.forEach((item, index) => {
+    const theta = (360 / totalItems) * index;
+    item.style.transform = `rotateY(${theta}deg) translateZ(${radius}px)`;
+    item.style.opacity = (index === currentIndex) ? 1 : 0.4;
+});
+
+// Update opacity function
+function updateOpacity() {
+    items.forEach((item, index) => {
+        item.style.opacity = (index === currentIndex) ? 1 : 0.4;
+    });
+}
+
+// Rotate carousel
+function rotateCarousel(direction) {
+    currentIndex = (currentIndex + direction + totalItems) % totalItems;
+    angle -= (360 / totalItems) * direction;
+    carousel.style.transform = `translateZ(-${radius}px) rotateY(${angle}deg)`;
+    updateOpacity();
+
+    // Bounce effect for active item
+    const activeItem = items[currentIndex];
+    activeItem.style.transform += ' scale(1.05)';
+    setTimeout(() => {
+        const theta = (360 / totalItems) * currentIndex;
+        activeItem.style.transform = `rotateY(${theta}deg) translateZ(${radius}px)`;
+    }, 300);
+
+    // Update caption
+    document.getElementById('caption').textContent = captions[currentIndex];
+}
+</script>
+
+</body>
+</html>
