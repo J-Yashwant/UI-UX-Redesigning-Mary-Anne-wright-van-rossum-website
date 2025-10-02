@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exhibitions - Mary-Anne Wright Van Ross</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Georgia', serif;
+      color: white;
+      overflow-x: hidden;
+      transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    }
+
+    /* Page transition styles */
+    body.page-exit {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .overlay {
+      position: relative;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .tagline, .center-title h1, .info-box, .navbar a {
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+    }
+
+    .tagline {
+      font-size: 1.4rem;
+      font-style: italic;
+      margin-top: 20px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      background: transparent;
+      padding: 10px 0;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 6px 12px;
+      transition: background 0.3s;
+    }
+
+    .navbar a.active,
+    .navbar a:hover {
+      background: white;
+      color: black;
+    }
+
+    .center-title h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      border-top: 1px solid white;
+      border-bottom: 1px solid white;
+      margin: 30px auto;
+      padding: 10px 0;
+      max-width: 600px;
+    }
+
+    .info-box {
+      padding: 20px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 20px auto;
+      text-align: left;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+    }
+
+    .info-box a {
+      color: orange;
+      text-decoration: underline;
+    }
+
+    .exhibition-highlight {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .exhibition-highlight h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-decoration: underline;
+    }
+
+    .exhibition-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .exhibition-card {
+      width: 300px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .exhibition-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .exhibition-card img:hover {
+      transform: scale(1.05);
+    }
+
+    .exhibition-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .exhibition-card p {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .past-exhibitions {
+      margin: 50px auto;
+      max-width: 900px;
+    }
+
+    .past-exhibitions h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      text-align: center;
+      text-decoration: underline;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      background-color: white;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -3px;
+    }
+
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 10px 40px;
+      box-sizing: border-box;
+    }
+
+    .timeline-item:nth-child(odd) {
+      left: 0;
+    }
+
+    .timeline-item:nth-child(even) {
+      left: 50%;
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border: 4px solid #FF9F55;
+      top: 15px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .timeline-item:nth-child(odd)::after {
+      right: -13px;
+    }
+
+    .timeline-item:nth-child(even)::after {
+      left: -13px;
+    }
+
+    .timeline-content {
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+    }
+
+    .timeline-content h3 {
+      margin-bottom: 10px;
+      color: #FF9F55;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #show-more {
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: white;
+      color: black;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      display: block;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.95);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .modal img {
+      max-width: 80%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+
+    .modal p {
+      color: #fff;
+      margin-top: 10px;
+      font-size: 1.1rem;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      font-size: 2rem;
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    @media screen and (max-width: 768px) {
+      .timeline::after {
+        left: 31px;
+      }
+      
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+      
+      .timeline-item:nth-child(even) {
+        left: 0;
+      }
+      
+      .timeline-item:nth-child(odd)::after,
+      .timeline-item:nth-child(even)::after {
+        left: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="1.mp4" type="video/mp4">
+    <img src="fallback.png" alt="Background">
+  </video>
+
+  <div class="overlay">
+    <p class="tagline">
+      To View any paintings in more detail please<br> click on each painting in turn.
+    </p>
+
+    <nav class="navbar">
+      <a href="home.html">HOME</a>
+      <a href="studio.html">STUDIOS</a>
+      <a href="exhibition.html" class="active">EXHIBITIONS</a>
+      <a href="gallery.html">ARTWORK - GALLERY</a>
+      <a href="contact.html">CONTACT</a>
+    </nav>
+
+    <div class="center-title">
+      <h1>Exhibitions</h1>
+    </div>
+
+    <div class="exhibition-highlight">
+      <h2>Current Exhibition</h2>
+      <div class="exhibition-details">
+        <div class="exhibition-card">
+          <img src="terras.avif" alt="Domaine Uma Exhibition" onclick="openModal(this.src, 'Exhibition at Domaine Uma')">
+          <h3>Domaine Uma, France</h3>
+          <p>Mary-Anne's work is currently exhibited at the beautiful Domaine Uma winery in the Pic St Loup region of France.</p>
+        </div>
+        <div class="exhibition-card">
+          <img src="1.jpg" alt="Devon Studio" onclick="openModal(this.src, 'Devon Studio Exhibition')">
+          <h3>Okehampton, Devon</h3>
+          <p>Mary-Anne's gallery/studio in Devon is now open for viewing by appointment only.</p>
+        </div>
+      </div>
+    </div>
+
+  
+
+    <div class="past-exhibitions">
+      <h2>Past Exhibitions</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h3>2019</h3>
+            <p>Terres Des Cambon, Chateau en Pic St Loup, Valfiquines, France</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h3>2018</h3>
+            <p>Solo Exhibition at Melbourne Arts Festival, Australia</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h3>2017</h3>
+            <p>Group Exhibition at London Contemporary Art Fair</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <h3>2016</h3>
+            <p>Bahrain National Museum Art Show</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button id="show-more" onclick="showMore()">View Exhibition Photos</button>
+
+    <div id="extra-gallery" class="exhibition-details hidden">
+      <div class="exhibition-card">
+        <img src="eyes.avif" alt="Exhibition Photo 1" onclick="openModal(this.src, 'Exhibition Setup at Domaine Uma')">
+        <h3>Domaine Uma Setup</h3>
+        <p>Preparing the exhibition space at the beautiful winery venue.</p>
+      </div>
+      <div class="exhibition-card">
+        <img src="gallery.avif" alt="Exhibition Photo 2" onclick="openModal(this.src, 'Visitors at the Exhibition')">
+        <h3>Exhibition Visitors</h3>
+        <p>Art enthusiasts viewing Mary-Anne's work at the France exhibition.</p>
+      </div>
+      <div class="exhibition-card">
+        <img src="launch.avif" alt="Exhibition Photo 3" onclick="openModal(this.src, 'Wine Tasting at the Opening')">
+        <h3>Opening Reception</h3>
+        <p>Combining fine art with fine wine at the exhibition opening.</p>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <img id="modal-img" src="" alt="Popup">
+      <p id="modal-caption"></p>
+    </div>
+  </div>
+
+  <script>
+    // Show More
+    function showMore() {
+      document.getElementById('extra-gallery').classList.remove('hidden');
+      document.getElementById('show-more').style.display = 'none';
+    }
+
+    // Modal Functions
+    function openModal(src, caption) {
+      document.getElementById('modal').style.display = 'flex';
+      document.getElementById('modal-img').src = src;
+      document.getElementById('modal-caption').innerText = caption;
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    // Page Transition Effect
+    document.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href && href !== "#" && !href.startsWith("mailto:") && !href.startsWith("tel:")) {
+          e.preventDefault();
+          document.body.classList.add('page-exit');
+          setTimeout(() => {
+            window.location.href = href;
+          }, 800);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

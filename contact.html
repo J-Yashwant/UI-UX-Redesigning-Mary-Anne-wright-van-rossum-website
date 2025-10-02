@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact | Mary-Anne Wright Van Ross</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Georgia', serif;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      animation: bgFade 2s ease forwards;
+    }
+
+    @keyframes bgFade {
+      0% { filter: brightness(0.5) blur(5px); }
+      100% { filter: brightness(1) blur(0px); }
+    }
+
+    .overlay {
+      padding: 30px 20px;
+      background: rgba(0, 0, 0, 0.6);
+      animation: slideUp 1.2s ease forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    @keyframes slideUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .tagline {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      font-style: italic;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+      animation: fadeIn 1.5s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 25px;
+      margin-bottom: 30px;
+      animation: fadeIn 1.8s ease forwards;
+      opacity: 0;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+
+    .navbar a:hover,
+    .navbar a.active {
+      background: white;
+      color: black;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.3rem;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+      animation: fadeIn 2s ease forwards;
+      opacity: 0;
+    }
+
+    .contact-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: flex-start;
+      gap: 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+      animation: slideUp 1.5s ease forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    /* Slider container */
+.slider {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* You can adjust this */
+    margin: auto;
+    overflow: hidden;
+    border-radius: 15px; /* Rounded corners */
+}
+
+/* Images inside the slider */
+.slider img {
+    width: 100%;
+    height: 500px; /* Fixed height for uniform look */
+    object-fit: cover; /* Ensures no distortion, fills space */
+    object-position: center; /* Centers the main subject */
+    border-radius: 15px; /* Matches container rounding */
+}
+
+/* Navigation arrows */
+.slider .prev,
+.slider .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.slider .prev {
+    left: 10px;
+}
+
+.slider .next {
+    right: 10px;
+}
+
+@media (max-width: 768px) {
+    .slider img {
+        height: 300px; /* Smaller height on mobile */
+    }
+}
+
+
+    .contact-info {
+      max-width: 400px;
+      line-height: 1.8;
+    }
+
+    .contact-info strong {
+      font-size: 1.1rem;
+    }
+
+    .contact-info a {
+      color: orange;
+      text-decoration: underline;
+    }
+
+    .contact-form {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      backdrop-filter: blur(4px);
+      animation: fadeIn 2.2s ease forwards;
+      opacity: 0;
+    }
+
+    .contact-form h2 {
+      margin-bottom: 15px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .contact-form input[type="submit"] {
+      background: white;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .contact-form input[type="submit"]:hover {
+      background: orange;
+    }
+
+    @media (max-width: 768px) {
+      .contact-wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="1.mp4" type="video/mp4">
+    <img src="fallback.png" alt="Background">
+  </video>
+
+  <div class="overlay">
+    <p class="tagline">Reach out to Mary-Anne for exhibitions, purchases, or art class bookings.</p>
+
+    <nav class="navbar">
+      <a href="home.html">HOME</a>
+      <a href="studio.html">STUDIOS</a>
+      <a href="exhibition.html">EXHIBITIONS</a>
+      <a href="gallery.html">ARTWORK - GALLERY</a>
+      <a href="contact.html" class="active">CONTACT</a>
+    </nav>
+
+    <h1>Contact Mary-Anne</h1>
+
+    <div class="contact-wrapper">
+
+      <div class="contact-info">
+        <p><strong>France</strong><br>
+        Puech Gazal, Commune of St Rome de Tarn, Aveyron</p>
+
+        <p><strong>England</strong><br>
+        St James Street, Okehampton, Devon</p>
+
+        <p><strong>Website</strong><br>
+        <a href="https://www.wrightvanrossart.com" target="_blank">www.wrightvanrossart.com</a></p>
+
+        <p><strong>Email</strong><br>
+        <a href="mailto:maryanne.arts1@gmail.com">maryanne.arts1@gmail.com</a></p>
+
+        <p><strong>Phone</strong><br>
+        <a href="tel:07776915738">07776915738</a></p>
+      </div>
+
+      <form class="contact-form">
+        <h2>Say Hello :</h2>
+        <input type="text" placeholder="Name" required>
+        <input type="email" placeholder="Email" required>
+        <input type="text" placeholder="Subject">
+        <textarea rows="5" placeholder="Message"></textarea>
+        <input type="submit" value="Submit">
+      </form>
+
+    </div>
+  </div>
+
+</body>
+</html>
